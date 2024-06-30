@@ -452,7 +452,7 @@ def extract_nodal_costs(config, n):
         "carrier in ['gas','oil','coal','lignite','uranium','H2'] and cost == 'marginal' and type == 'generators'").index
     biomass = df_comp.query("(carrier.str.contains('biomass') or carrier.str.contains('biogas')) and"
                             " cost == 'marginal' and type == 'stores'").index
-    df_comp.loc[fuels.union(biomass), "cost"] = "fuel"
+    # df_comp.loc[fuels.union(biomass), "cost"] = "fuel"  # deactivated for now
     df_comp = df_comp.set_index(["type", "cost", "country", "carrier"])
     df_comp = df_comp.fillna(0).groupby(["type", "cost", "country", "carrier"]).sum()
     df_comp = df_comp.loc[~df_comp.apply(lambda x: x < 1e3).all(axis=1)]

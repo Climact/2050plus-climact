@@ -221,8 +221,7 @@ def _load_costs_year_segment(config, year=None, _countries=None, cost_segment=No
             df_pivoted.columns=df_pivoted.columns.astype(str)
             df = df_pivoted.copy()
             df["cost_segment"] = cost_segment
-         
-        df.loc[df.cost=="fuel","cost"] = "marginal"
+
         df_tot = (df.groupby("cost_segment")
                   .sum()
                   .reset_index()
