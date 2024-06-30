@@ -12,8 +12,10 @@ from st_common import st_side_bar
 st_page_config(layout="wide")
 scenario = st_side_bar()
 
-st.title("Costs")
+FORMATTER = {"total": "Total", "capital": "CAPEX", "marginal": "OPEX", "elec": "Electricity",
+             "gas": "Methane", "H2": "Hydrogen"}
 
+st.title("Costs")
 
 @st.cache_data(show_spinner="Retrieving data ...")
 def get_data(scenario, path):
@@ -22,7 +24,8 @@ def get_data(scenario, path):
             Path(network_path, scenario_dict[scenario]["path"], path),
             header=0
         )
-        .replace({"total": "Total", "capital": "CAPEX", "marginal": "OPEX"})
+        .replace(FORMATTER)
+        .rename(columns=FORMATTER)
     )
     return df
 
@@ -115,7 +118,7 @@ st.plotly_chart(
 
 df_cost_years.index.set_names("Costs per unit segment/type [B€/year]", inplace=True)
 st.dataframe(
-    df_cost_years.assign(total=df_cost_years.sum(axis=1)).style.format(precision=2, thousands=",", decimal='.'),
+    df_cost_years.assign(Total=df_cost_years.sum(axis=1)).style.format(precision=2, thousands=",", decimal='.'),
     use_container_width=True)
 
 # %%
