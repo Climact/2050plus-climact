@@ -457,8 +457,7 @@ def extract_nodal_costs(config, n):
     df_comp = df_comp.fillna(0).groupby(["type", "cost", "country", "carrier"]).sum()
     df_comp = df_comp.loc[~df_comp.apply(lambda x: x < 1e3).all(axis=1)]
     df_comp.insert(0, column="units", value="Euro")
-    
-    
+
     cost_mapping = pd.read_csv(
         Path(config["path"]["analysis_path"].resolve().parents[1], "data", "cost_mapping.csv"), index_col=[0, 1],
         header=0).dropna()

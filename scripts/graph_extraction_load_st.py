@@ -181,6 +181,10 @@ def _load_costs_year_segment(config, year=None, _countries=None, cost_segment=No
     if _countries:
         df = df.query("country in @_countries")
         countries = list(set(_countries).intersection(set(df.country.unique())))
+        if "BE" in countries:
+            countries = [c for c in countries if c != "BE"] + ["BX", "FL", "WL"]
+        else:
+            countries = countries
     else:
         countries = None
 
