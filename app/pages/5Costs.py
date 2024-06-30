@@ -43,14 +43,16 @@ with col1:
                                          ["Total"] + list(df_cost_segments.cost_segment.unique()))
     if selected_cost_segment != "Total":
         df_cost_segments = df_cost_segments.query("cost_segment in @selected_cost_segment")
-    else:
-        df_cost_segments = df_cost_segments.query("cost_segment != 'Net_Imports'")
 
 with col2:
     selected_area = st.selectbox("Choose area :", COSTS_AREA)
     df_cost_segments = df_cost_segments[df_cost_segments.index.str.endswith(COSTS_AREA[selected_area])]
 
+df_cost_segments = df_cost_segments.query("`cost/carrier` != 'Total'")
+if selected_cost_segment != "Net_Imports":
+    df_cost_segments.loc[df_cost_segments["cost_segment"] == "Net_Imports", "cost/carrier"] = "Imports"
 df_cost_segments = df_cost_segments.groupby(by="cost/carrier").sum().drop(columns=["cost_segment"])
+df_cost_segments.loc["Total"] = df_cost_segments.sum()
 
 df_cost_segments = df_cost_segments.div(1e9)
 
