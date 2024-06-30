@@ -9,8 +9,6 @@ from st_common import scenario_dict
 from st_common import st_page_config
 from st_common import st_side_bar
 
-AREAS = ["ENTSO-E area", "EU27", "BE"]
-
 st_page_config(layout="wide")
 scenario = st_side_bar()
 
