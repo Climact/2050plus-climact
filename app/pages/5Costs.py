@@ -22,6 +22,7 @@ def get_data(scenario, path):
             Path(network_path, scenario_dict[scenario]["path"], path),
             header=0
         )
+        .replace({"total": "Total", "capital": "CAPEX", "marginal": "OPEX"})
     )
     return df
 
@@ -49,8 +50,6 @@ with col2:
 df_cost_segments = df_cost_segments.groupby(by="cost/carrier").sum().drop(columns=["cost_segment"])
 
 df_cost_segments = df_cost_segments.div(1e9)
-
-df_cost_segments.loc["Total"] = df_cost_segments.sum()
 
 fig = px.bar(
     df_cost_segments,
