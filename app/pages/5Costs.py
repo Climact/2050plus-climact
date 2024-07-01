@@ -53,6 +53,7 @@ if selected_cost_segment != "Net_Imports":
     df_cost_segments.loc[df_cost_segments["cost_segment"] == "Net_Imports", "cost/carrier"] = "Imports"
 df_cost_segments = df_cost_segments.groupby(by="cost/carrier").sum().drop(columns=["cost_segment"])
 df_cost_segments.loc["Total"] = df_cost_segments.sum()
+df_cost_segments = df_cost_segments.replace(0, None).dropna(how="all").fillna(0)
 
 df_cost_segments = df_cost_segments.div(1e9)
 
